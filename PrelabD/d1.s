@@ -1,0 +1,82 @@
+        .globl	printvalue
+	.globl	println 
+
+	.text
+
+printvalue:
+	#---------------------------------------------------------
+	#printFraction
+	#Accept Argument: $a0 - address of the object Fraction
+	add	$t1,	$zero,	$a0
+	lb	$a0,	0($t1)
+	addi	$v0,	$zero,	1	#prepare output int
+	syscall				#output
+
+	addi	$v0,	$zero,	11
+	addi	$a0,	$zero,	'/'
+	syscall
+
+	lb	$a0,	1($t1)
+	addi	$v0,	$zero,	1	#prepare output int
+	syscall	
+        
+        addi	$v0,	$zero,	11
+	addi	$a0,	$zero,	'/'
+	syscall
+
+	lb	$a0,	2($t1)
+	addi	$v0,	$zero,	1	#prepare output int
+	syscall	
+
+        addi	$v0,	$zero,	11
+	addi	$a0,	$zero,	'/'
+	syscall
+
+	lb	$a0,	3($t1)
+	addi	$v0,	$zero,	1	#prepare output int
+	syscall	
+      
+        addi	$v0,	$zero,	11
+	addi	$a0,	$zero,	'/'
+	syscall
+
+	lb	$a0,	4($t1)
+	addi	$v0,	$zero,	1	#prepare output int
+	syscall	
+        
+        
+        addi	$v0,	$zero,	11
+	addi	$a0,	$zero,	'/'
+	syscall
+
+        
+	lb	$a0,	5($t1)
+	addi	$v0,	$zero,	1	#prepare output int
+	syscall	
+      
+        addi	$v0,	$zero,	11
+	addi	$a0,	$zero,	'/'
+	syscall
+        
+        
+	lb	$a0,	6($t1)
+	addi	$v0,	$zero,	1	#prepare output int
+	syscall	
+      
+        addi	$v0,	$zero,	11
+	addi	$a0,	$zero,	'/'
+	syscall
+
+
+	jr	$ra
+
+
+
+println:	
+	#---------------------------------------------------------
+	#println
+	addi	$v0,	$zero,	11
+	addi	$a0,	$zero,	0xA
+	syscall
+
+	jr	$ra

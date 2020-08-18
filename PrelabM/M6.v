@@ -1,0 +1,33 @@
+module labM;
+reg [31:0] memIn, address;
+reg clk, memRead, memWrite;
+wire [31:0] memOut;
+
+//This sequential component is made up of many 32-bit words.
+mem myMem(memOut, address, memIn, clk, memRead, memWrite);
+
+initial
+begin
+	address = 32'h80;
+	memWrite = 0;
+	memRead = 1;
+	
+	repeat(11)
+	begin
+		#1;
+		if (memOut[31:26] == 0)
+			$display("R: op=%d rs=%d rt=%d rd=%d shamt=%d func=%d", memOut[31:26], memOut[25:21], memOut[20:16], memOut[15:11], memOut[10:6], memOut[5:0]);
+		
+		else if(memOut[31:26] == 2)
+			$display("J: op=%d addr=%d", memOut[31:26], memOut[25:0]);
+		
+		else
+			$display("I: op=%d rs=%d rt=%d i=%d", memOut[31:26], memOut[25:21], memOut[20:16], memOut[15:0]);
+	
+		#1;
+		address = address + 4;
+	end
+	$finish;
+end
+endmodule
+

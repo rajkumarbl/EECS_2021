@@ -1,0 +1,83 @@
+       .text
+
+main:   #-----------------------------------
+        sw      $ra, 0($sp)
+        addi    $sp, $sp, -4
+        #-----------------------------------
+	addi    $s0, $0, 0
+        addi	$v0, $0, 5	
+        syscall
+        add     $s2, $v0, $0
+        add     $s3, $s2, $0
+	add 	$a0, $s2, $0	#a0 = input from the user 
+        jal     list		
+	add	$s0, $0,  $v0
+
+
+loop:   beq     $s2, $0, sumint
+        add	$a0, $0, $s0
+	addi	$v0, $0, 5	
+	syscall
+        add     $a1, $v0, $0
+	jal	newc			# append 'input value'
+        addi    $s2, $s2, -1
+        j loop
+
+sumint:add $a0, $s0, $0
+       add $a1, $s3, $0
+       j printvalue
+       
+       
+
+        #-----------------------------------
+	addi	$sp,	$sp,	4	#pop one from stack
+	lw	$ra,	0($sp)
+	#-----------------------------------
+	jr	$ra
+     
+newc:   #-----------------------------------
+	#Accept Argument: $a0 reference, $a1 char
+       
+        addi $v0,	$0,	9	#allocate address service
+        addi $a0, $0, 8 
+	syscall			#--> Return address in $v0 
+        sw   $a0,    0($v0)    
+        sw   $a1,    4($v0)  
+        jr   $ra    
+
+list:      #-----------------------------------
+	   #Accept Argument: $a0 max size
+
+	   #allocate room for variables
+	   addi	$v0,	$0,	9	#allocate address service
+	   syscall			#--> Return address in $v0
+	   sb	$0,	0($v0)		# null terminator
+
+	   jr	$ra
+
+printvalue:
+	#---------------------------------------------------------
+	#printFraction
+	#Accept Argument: $a0 - address of the object Fraction
+
+       add  $t0, $a0, $0
+       addi $t2,  $0,  0
+       add  $t3,  $a1, $0
+
+sum:bge $t2, $t3, done      #if t2>=$a1, goto done
+      lw  $t0, 0($a0)         #load value at addr a0 to t0
+      add $t1, $t1, $t0       # sum = sum + array[i]
+      addi $a0, $a0, 4        # add addr by 4 to get the address of   next value in the array
+      addi $t2, $t2, 1        # i = i + 1
+     j sum
+
+ 
+
+done:
+      add  $a0, $0, $t1
+      addi	$v0,	$zero,	1	#prepare output int
+      syscall	
+      jr $ra
+        
+  
+
